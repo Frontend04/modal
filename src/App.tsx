@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Modal from './ui/Modal/Modal';
+import ShowAlertBtn from './ui/Button/ShowAlertBtn';
+import Alert from './ui/Alert/Alert';
 
-function App() {
+const App: React.FC = () => {
+  const [showAlertW, setShowAlertW] = useState(false);
+
+  const closeModal = () => {
+    setShowAlertW(false);
+  };
+
+  const continueHandler = () => {
+    alert('You pressed Continue');
+  };
+
+  const modalShow = () => {
+    setShowAlertW(true);
+  };
+
+  const closeAlert = () => {
+    console.log('Alert dismissed');
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {!showAlertW && <ShowAlertBtn show={showAlertW} onClickBtn={modalShow} />}
+      <Modal
+        show={showAlertW}
+        close={closeModal}
+        title="Some kinda modal title"
+        text="This is modal content"
+        config={[
+          { type: 'Success', label: 'Continue', clicked: continueHandler },
+          { type: 'Danger', label: 'Close', clicked: closeModal }
+        ]}
+      />
+       <Alert type="warning" onDismiss={closeAlert}>
+        This is a warning type alert
+      </Alert>
+      <Alert type="success">This is a success type alert</Alert>
     </div>
   );
-}
+};
 
 export default App;
